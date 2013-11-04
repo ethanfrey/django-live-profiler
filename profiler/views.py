@@ -29,6 +29,14 @@ def global_stats_mongo(request):
 @user_passes_test(lambda u:u.is_superuser)
 def stats_by_view(request):
     stats = get_client().select(group_by=['view','query'], where={'type':'sql'})
+    return _display_by_view(request, stats)
+
+@user_passes_test(lambda u:u.is_superuser)
+def mongo_stats_by_view(request):
+    stats = get_client().select(group_by=['view','query'], where={'type':'mongo'})
+    return _display_by_view(request, stats)
+
+def _display_by_view(request, stats):
     grouped = {}
     for r in stats:
         if r['view'] not in grouped:
