@@ -15,7 +15,7 @@ else:
 
 setup(
     name = "django-live-profiler",
-    version = "0.0.9",
+    version = "0.0.9a",
     author = "Alexander Tereshkin",
     author_email = "atereshkin@invitebox.com",
     description = ("A database access profiler for Django-based applications that can be ran in production "
@@ -31,7 +31,7 @@ setup(
         "Topic :: Software Development",
         "Framework :: Django",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: BSD License",        
+        "License :: OSI Approved :: BSD License",
     ],
     include_package_data=True,
         entry_points={
