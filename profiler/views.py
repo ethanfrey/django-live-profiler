@@ -18,28 +18,37 @@ def global_stats(request):
                               context_instance=RequestContext(request))
 
 @user_passes_test(lambda u:u.is_superuser)
+def global_stats_mongo(request):
+    stats = get_client().select(group_by=['query'], where={'type':'mongo'})
+    for s in stats:
+        s['average_time'] = s['time'] / s['count']
+    return render_to_response('profiler/index.html',
+                              {'queries' : stats},
+                              context_instance=RequestContext(request))
+
+@user_passes_test(lambda u:u.is_superuser)
 def stats_by_view(request):
     stats = get_client().select(group_by=['view','query'], where={'type':'sql'})
     grouped = {}
     for r in stats:
         if r['view'] not in grouped:
-            grouped[r['view']] = {'queries' : [], 
+            grouped[r['view']] = {'queries' : [],
                                   'count' : 0,
                                   'time' : 0,
                                   'average_time' : 0}
         grouped[r['view']]['queries'].append(r)
         grouped[r['view']]['count'] += r['count']
         grouped[r['view']]['time'] += r['time']
-        r['average_time'] = r['time'] / r['count'] 
+        r['average_time'] = r['time'] / r['count']
         grouped[r['view']]['average_time'] += r['average_time']
-        
+
     maxtime = 0
     for r in stats:
         if r['average_time'] > maxtime:
             maxtime = r['average_time']
     for r in stats:
         r['normtime'] = (0.0+r['average_time'])/maxtime
-           
+
     return render_to_response('profiler/by_view.html',
                               {'queries' : grouped,
                                'stats' :simplejson.dumps(stats)},

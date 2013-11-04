@@ -18,7 +18,6 @@
   </head>
 
   <body>
-
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -31,6 +30,7 @@
             <ul class="nav">
               <li><a href="{% url "profiler_global_stats" %}">SQL global</a></li>
               <li><a href="{% url "profiler_stats_by_view" %}">SQL by view</a></li>
+              <li><a href="{% url "profiler_global_stats_mongo" %}">Mongo global</a></li>
               <li><a href="{% url "profiler_python_stats" %}">Python code</a></li>
               <li><a href="{% url "profiler_reset" %}?next={{ request.path }}">Reset</a></li>
             </ul>
