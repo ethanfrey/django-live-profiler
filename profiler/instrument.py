@@ -72,7 +72,7 @@ def refresh_action(cursor, delay, *args, **kwargs):
     # refresh is called to make the call, but also when the data is all read to check if there is more data
     # usually, the refresh takes little-to-no time, at least on localhost
     # but it is nice to log it for the general case.
-    if (cursor.num_calls > 1) and delay.seconds == 0 and d.microseconds < 10:
+    if cursor.num_calls > 1 and delay.seconds == 0 and delay.microseconds < 10:
         return None
     if name == '$cmd':
         action = [k for k in spec.keys() if not k in ('fields', 'query')]
